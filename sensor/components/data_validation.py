@@ -19,7 +19,7 @@ class DataValidation:
             logging.info(f"{'>>'*20} Data Validation {'<<'*20}")
             self.data_validation_config=data_validation_config
             self.data_ingestion_artifact =data_ingestion_artifact
-            self.data_validation_error =dict()
+            self.validation_error =dict()
         except Exception as e:
             raise SensorException(e,sys)
 
@@ -40,7 +40,7 @@ class DataValidation:
             drop_column_names= null_report[null_report>threshold].index
 
             logging.info(f"columns to drop:{list(drop_column_names)}")
-            self.data_validation_error[report_key_name]=list(drop_column_names)
+            self.validation_error[report_key_name]=list(drop_column_names)
             df.drop(list(drop_column_names),axis=1,inplace =True)
 
             #return None no of columns left
@@ -98,7 +98,7 @@ class DataValidation:
                     }
                     #different distribution
 
-            self.data_validation_error[report_key_name]=drift_report
+            self.validation_error[report_key_name]=drift_report
         except Exception as e:
             raise SensorException(e,sys)
 
@@ -133,13 +133,21 @@ class DataValidation:
             logging.info(f"is all required columns present in test df")
             test_df_columns_status=self.is_required_columns_exists(base_df=base_df, current_df= test_df, report_key_name="missing_columns_within_test_dataset")
 
+            
+            if train_df_columns_status:
+                logging.info(f"As all column are available in train df hence detecting data drift")
+                self.data_drift(base_df=base_df, current_df=train_df,report_key_name="data_drift_within_train_dataset")
+            if test_df_columns_status:
+                logging.info(f"As all column are available in test df hence detecting data drift")
+                self.data_drift(base_df=base_df, current_df=test_df,report_key_name="data_drift_within_test_dataset")
+
             #write the report
             logging.info("Write report in yml file")
             utils.write_yml_file(file_path= self.data_validation_config.report_file_path,
-            data= self.data_validation_error)
+            data= self.validation_error)
 
             data_validation_artifact =artifact_entity.DataValidationArtifact(report_file_path=self.data_validation_config.report_file_path)
-            logging.info(F"data validation artifact:{data_validation_artifact}")
+            logging.info(f"data validation artifact:{data_validation_artifact}")
             return data_validation_artifact
         except Exception as e:
             raise SensorException(e,sys)
