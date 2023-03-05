@@ -89,8 +89,8 @@ def load_numpy_array_data(file_path:str)->np.array:
     file_path: str location of file to load
     return: np.array data loaded
     """
-    try:
+     try:
         with open(file_path,"rb") as file_obj:
             return np.load(file_obj)
-    except Exception as e :
+     except Exception as e :
         raise SensorException(e,sys) from e

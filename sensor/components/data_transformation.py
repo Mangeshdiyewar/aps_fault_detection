@@ -105,7 +105,7 @@ class DataTransformation:
             )
 
             logging.info(f"Data transformation object {data_transformation_artifact}")
-            return data_transformation_artifact:
+            return data_transformation_artifact
 
         except Exception as e :
             raise SensorException(e, sys)
