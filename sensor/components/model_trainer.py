@@ -23,7 +23,7 @@ class ModelTrainer:
         except Exception as e:
             raise SensorException(e, sys)
 
-    def fine_tune(self):
+    def fine_tune(self,):
         try:
             #write code for Grid search cv
             pass
