@@ -2,7 +2,7 @@ from sensor.predictor import ModelResolver
 from sensor.entity import config_entity,artifact_entity
 from sensor.exception import SensorException
 from sensor.logger import logging
-from sensor.utils.utils import load_object
+from sensor.utils.utils import load_object , save_object
 from sklearn.metrics import f1_score
 import pandas  as pd
 import sys,os
@@ -12,7 +12,7 @@ class ModelEvaluation:
     def __init__(self,
         model_eval_config:config_entity.ModelEvaluationConfig,
         data_ingestion_artifact:artifact_entity.DataIngestionArtifact,
-        data_transformation_artifact:self.artifact_entity.DataTransformationArtifact,
+        data_transformation_artifact:artifact_entity.DataTransformationArtifact,
         model_trainer_artifact:artifact_entity.ModelTrainerArtifact
         ):
         try:
@@ -58,7 +58,7 @@ class ModelEvaluation:
             #currently trained model objects
             current_transformer =load_object(file_path=self.data_transformation_artifact.transformer_object_path)
             current_model =load_object(file_path=self.model_trainer_artifact.model_path)
-            current_target_encoder =load_object(file_path=self.data_transformation_artifact.target_encoder_artifact)
+            current_target_encoder =load_object(file_path=self.data_transformation_artifact.target_encoder_path)
 
 
 

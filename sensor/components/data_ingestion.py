@@ -46,7 +46,7 @@ class DataIngestion:
 
             logging.info("split dataset into train and test set")
             #split dataset into train and test split
-            train_df,test_df = train_test_split(df,test_size = self.data_ingestion_config.test_size,random_state =42)
+            train_df,test_df = train_test_split(df,test_size = self.data_ingestion_config.test_size,)
 
             logging.info("create dataset directory if not available")
             #"create dataset directory if not available"

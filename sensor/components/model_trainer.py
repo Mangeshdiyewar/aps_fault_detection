@@ -78,6 +78,12 @@ class ModelTrainer:
 
 
             #save the trained model
+            logging.info(f"Saving the model")
+            utils.save_object(file_path=self.model_trainer_config.model_path, obj= model)
+
+
+
+            #prepare the artifact
             logging.info(f"Prepare the artifact")
             model_trainer_artifact = artifact_entity.ModelTrainerArtifact(model_path=self.model_trainer_config.model_path,
             f1_train_score= f1_train_score,f1_test_score=f1_test_score)
